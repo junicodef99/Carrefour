@@ -7,7 +7,7 @@
 #include <string.h>
 
 #define MAXPAUSE 2
-
+//d
 struct sembuf sem_oper ;  /* Operation P & V */
 
 typedef struct Voie {
