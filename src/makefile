@@ -37,7 +37,7 @@ clean:
 # LES REGLES DE DEPENDANCE. Certaines sont implicites mais je recommande d'en 
 # mettre une par fichier source. 
 #-----------------------------------------------------------------------------
-project.o:project.c structs.h
+project.o:project.c structs.h voiture.h
 
 #---------------------------------
 # REGLES DE COMPILATION IMPLICITES
