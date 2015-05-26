@@ -31,16 +31,24 @@ typedef struct Traffic
 
 	//Structure pour la requette du véhicule
 typedef struct {
-    int pidVoiture;
+    long type;			//contiendra le pid de la voiture
+    int pidEmetteur;
     Position position;
-    char type[20];
-}requeteVoiture;
+    char typeVoiture[20];
+}RequeteVoiture;
 
 	//Structure pour la requette de l'échangeur
 typedef struct {
-    int numEchangeur;
+    long type;			//contiendra le pid de l'échangeur
+    int pidEmetteur;
     Position positionVoiture;
-}requeteEchangeur;
+}RequeteEchangeur;
+
+	//Structure qui contiendra la réponse
+typedef struct {
+    long type;				//contiendra le pid du récepteur
+    char reponse;
+}ReponseRequete;
 
 
 

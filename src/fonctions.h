@@ -7,6 +7,7 @@
 #include <string.h>
 #include <time.h>
 #include "structs.h"
+#include "cles.h"
 
 /**
   * Fichier qui contient les fonctions de gestion du projet
@@ -84,13 +85,22 @@ void initProprietesVehicule(Voiture* V)
 	
 	
 }
-/*
-void initVoiture(int nbre)
+
+void constructionRequeteVoiture(RequeteVoiture *reqVoiture, Position pos, char* type)
 {
-	int i, j, pid; 
-	
-	
+	reqVoiture->type= 1;
+	reqVoiture->pidEmetteur = getpid();
+	reqVoiture->position = pos;
+	strcpy(reqVoiture->typeVoiture,type);
 }
-*/
+
+void constructionRequeteEchangeur(RequeteEchangeur *reqEchangeur, Position pos)
+{
+	reqEchangeur->type = 1;
+	reqEchangeur->pidEmetteur = getpid();
+	reqEchangeur->positionVoiture = pos;
+}
+
+
 
 

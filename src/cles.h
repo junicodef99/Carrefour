@@ -1,0 +1,2 @@
+#define CLEMEM1 13274
+#define CLEMEM2 1227
