@@ -4,6 +4,9 @@
 #include <sys/ipc.h> 
 #include <sys/sem.h> 
 #include <errno.h>
+#include <sys/msg.h>
+#include <sys/shm.h>
+#include <sys/wait.h>
 #include <string.h>
 #include <time.h>
 #include "structs.h"

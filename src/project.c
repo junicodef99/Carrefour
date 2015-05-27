@@ -1,24 +1,22 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/ipc.h> 
-#include <sys/msg.h>
-#include <sys/sem.h> 
-#include <sys/shm.h>
-#include <sys/wait.h>
-#include <errno.h>
 #include "fonctions.h"
 
 
-int shmid, shmid2;
+int shmid, shmid2, shmid3;
 
 int main(int argc, char * argv[])
 {
-	sem_id=semget(IPC_PRIVATE, 1, IPC_CREAT | IPC_EXCL | 0666);
+	if(sem_id=semget(IPC_PRIVATE, 1, IPC_CREAT | IPC_EXCL | 0666) == -1)
+	{
+		printf("Impossible de creer la semaphore");
+		exit(1);
+	}
 	semctl(sem_id, 0, SETVAL, 1);
 	
-	shmid = shmget(IPC_PRIVATE, sizeof(Traffic), 0666);
-	shmid2 = shmget(IPC_PRIVATE, sizeof(int), 0666);
+	shmid = shmget(CLEMEM1, sizeof(Traffic), IPC_CREAT | 0666);
+	shmid2 = shmget(CLEMEM2, sizeof(int), IPC_CREAT | 0666);
+	shmid3 = shmget(CLEMEM3, sizeof(int), IPC_CREAT | 0666);
 	
 	int msgid;			
 	key_t cle;		
@@ -33,7 +31,7 @@ int main(int argc, char * argv[])
 		exit(1);
 	}
 	*/
-	if ((msgid = msgget(IPC_PRIVATE, 0750 | IPC_CREAT | IPC_EXCL)) == -1) 
+	if ((msgid = msgget(CLEMEMFILE1, 0750 | IPC_CREAT)) == -1) 
 	{
 		perror("Erreur de creation de la file de message\n");
 		exit(1);
@@ -41,7 +39,7 @@ int main(int argc, char * argv[])
 	
 	
 	int pid, pidd, i, j, num = atoi(argv[1]);
-	int *missionsAccomplies;
+	int *missionsAccomplies, *etatVehiculesInitialises;
 	Traffic *trafficCarefour;	
 	
 	trafficCarefour = malloc(4*sizeof(Traffic));
@@ -51,7 +49,10 @@ int main(int argc, char * argv[])
 	missionsAccomplies = (int*)shmat(shmid2, NULL, 0);
 	*missionsAccomplies = 0;
 	
+	etatVehiculesInitialises = (int*)shmat(shmid3, NULL, 0);
+	*etatVehiculesInitialises = 0;
 	
+	printf("##: %d\n",*etatVehiculesInitialises);
 	if (atoi(argv[1]) < 1 || atoi(argv[1]) > 20)
 	{
 		fprintf(stderr,"**Vous de devez definir en parametre un nombre de vehicules**\n");
@@ -88,14 +89,16 @@ int main(int argc, char * argv[])
 					}
 					printf("\n\n");
 					while(voiture.tailleItineraire!=0)
-					{
+					{													
 						while(voiture.positionSurEchangeur<0)
-						{
-							
-							voiture.positionSurEchangeur+=voiture.vitesse;
-							usleep(500000);
+						{	
+								//On s'assure d'abord que tous les véhicules ont étés initialisés avant de lancer l'annimation.	
+							if(*etatVehiculesInitialises == 1)
+							{
+								voiture.positionSurEchangeur+=voiture.vitesse;
+								usleep(500000);
+							}
 						}
-						
 						switch(voiture.entree.numEchangeur)
 						{
 							case 1:
@@ -154,9 +157,10 @@ int main(int argc, char * argv[])
 						voiture.tailleItineraire--;
 						
 					}
+					
 					printf("-**voiture num %d est arrivee a destination**- \n",voiture.num);
 					P(0);
-					(*missionsAccomplies)+=1;
+					(*missionsAccomplies)++;
 					V(0);
 					printf("\n\n");
 					
@@ -174,15 +178,17 @@ int main(int argc, char * argv[])
 				sleep(1);
 			}
 			
-			
+				//Varariable utile afin de s'assurer que tout les véhicules ont étés positionnées avant le début de l'animation
+			(*etatVehiculesInitialises) = 1;
 			
 			
 			
 			
 				//On boucle tant que tous les véhicules ne sont pas arrivés à destination
-			while (*missionsAccomplies+1 != atoi(argv[1])) 
+			do
 			{
 					//On réceptionne la requete du véhicule
+				printf("##: %d\n",*etatVehiculesInitialises);
 				if(msgrcv(msgid,&requeteV,sizeof(RequeteVoiture),1,0) == -1)
 				{
 					printf("Erreur de lecture de la requete de la voiture %s \n", requeteV.typeVoiture);
@@ -197,8 +203,9 @@ int main(int argc, char * argv[])
 					printf("Erreur d'envoi de la reponse à la voiture %s \n", requeteV.typeVoiture);
 					exit(1);
 				}
+				fprintf(stdout,"missionsAccomplies: %d \n",*missionsAccomplies);
 				
-			}
+			}while (*missionsAccomplies+1 != atoi(argv[1]));
 			
 			
 
@@ -229,7 +236,10 @@ int main(int argc, char * argv[])
 	wait(NULL);
 	fprintf(stdout,"%d - %d\n",trafficCarefour[0].NS,trafficCarefour[0].EO);
 	fprintf(stdout,"missionsAccomplies: %d \n",*missionsAccomplies);
+		
+		
 	shmdt(missionsAccomplies);
+	shmdt(etatVehiculesInitialises);
 	shmdt(trafficCarefour);
 		
 	exit(0);
