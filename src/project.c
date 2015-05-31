@@ -7,7 +7,8 @@ int shmid, shmid2, shmid3;
 
 int main(int argc, char * argv[])
 {
-	if(sem_id=semget(IPC_PRIVATE, 1, IPC_CREAT | IPC_EXCL | 0666) == -1)
+	
+	if(sem_id=semget(CLESEM1, 1, IPC_CREAT | 0666) == -1)
 	{
 		printf("Impossible de creer la semaphore");
 		exit(1);
@@ -18,12 +19,13 @@ int main(int argc, char * argv[])
 	shmid2 = shmget(CLEMEM2, sizeof(int), IPC_CREAT | 0666);
 	shmid3 = shmget(CLEMEM3, sizeof(int), IPC_CREAT | 0666);
 	
-	int msgid;			
+	int msgid, msgid2;			
 	key_t cle;		
 	int longMSG ;	    
 	RequeteVoiture requeteV;
 	RequeteEchangeur requeteE;
 	ReponseRequete reponseReq;
+	ReponseRequete reponseReq2;
 	/*	
 	if ((cle = ftok(argv[0], 'u')) == -1) 
 	{
@@ -36,14 +38,22 @@ int main(int argc, char * argv[])
 		perror("Erreur de creation de la file de message\n");
 		exit(1);
 	}
+	if ((msgid2 = msgget(CLEMEMFILE2, 0750 | IPC_CREAT)) == -1) 
+	{
+		perror("Erreur de creation de la file de message\n");
+		exit(1);
+	}
 	
 	
-	int pid, pidd, i, j, num = atoi(argv[1]);
+	int pid, pidd, i, j, k, num = atoi(argv[1]);
 	int *missionsAccomplies, *etatVehiculesInitialises;
+	Feu statutFeu[4];
 	Traffic *trafficCarefour;	
 	
-	trafficCarefour = malloc(4*sizeof(Traffic));
+	initStatutFeux(statutFeu);
+	
 	trafficCarefour = (Traffic*)shmat(shmid, NULL, 0);
+	trafficCarefour = malloc(4*sizeof(Traffic));
 	initTrafficCarefour(trafficCarefour);
 	
 	missionsAccomplies = (int*)shmat(shmid2, NULL, 0);
@@ -53,15 +63,16 @@ int main(int argc, char * argv[])
 	*etatVehiculesInitialises = 0;
 	
 	printf("##: %d\n",*etatVehiculesInitialises);
-	if (atoi(argv[1]) < 1 || atoi(argv[1]) > 20)
+	if (atoi(argv[1]) < 1 || atoi(argv[1]) > 30)
 	{
-		fprintf(stderr,"**Vous de devez definir en parametre un nombre de vehicules**\n");
+		fprintf(stderr,"**Vous de devez definir en parametre un nombre de vehicules superieur a 0 et inferieur a 31**\n");
 		exit(0);
 	}
 	//for(num =0; num<=4; num++)
 	//{
 		if(pid = fork() == 0)
 		{
+			
 			//Echangeurs 
 			printf("----------------- >> je suis le process echangeur de pid %d \n",getpid());
 			
@@ -102,18 +113,17 @@ int main(int argc, char * argv[])
 						switch(voiture.entree.numEchangeur)
 						{
 							case 1:
-								if(voiture.entree.orientation=='N' || voiture.entree.orientation=='S') 
-								{
-									P(0);
-									trafficCarefour[voiture.entree.numEchangeur-1].NS++;
-									V(0);
-								}
-								else if(voiture.entree.orientation=='E' || voiture.entree.orientation=='O') 
-								{
-									P(0);
-									trafficCarefour[voiture.entree.numEchangeur-1].EO++;
-									V(0);
-								}
+								P(0);
+								if(voiture.entree.orientation=='N') 
+									trafficCarefour[voiture.entree.numEchangeur-1].N++;
+								else if(voiture.entree.orientation=='S')
+									trafficCarefour[voiture.entree.numEchangeur-1].S++;
+								else if(voiture.entree.orientation=='E') 
+									trafficCarefour[voiture.entree.numEchangeur-1].E++;
+								else if(voiture.entree.orientation=='O')
+									trafficCarefour[voiture.entree.numEchangeur-1].O++;
+								V(0);
+								
 									//Construction et envoi de requete à l'Echangeur
 								constructionRequeteVoiture(&requeteV, voiture.entree, voiture.type);
 								if(msgsnd(msgid,&requeteV,sizeof(RequeteVoiture),0) == -1)
@@ -158,20 +168,21 @@ int main(int argc, char * argv[])
 						
 					}
 					
-					printf("-**voiture num %d est arrivee a destination**- \n",voiture.num);
-					P(0);
+					P(0);						
 					(*missionsAccomplies)++;
-					V(0);
-					printf("\n\n");
-					
-					
+					printf("la voiture %d est arrive a destination.",voiture.num);
+					printf("\n\n");					
 					free(voiture.itineraire);
+					V(0);
+					
 					exit(1);
+					
+					
 				}
 				else if(pidd==-1)
 				{
 					printf("Erreur de creation de l'echangeur n: %d",0);
-					exit(0);
+					exit(1);
 				}
 				
 				//wait(NULL);
@@ -188,56 +199,108 @@ int main(int argc, char * argv[])
 			do
 			{
 					//On réceptionne la requete du véhicule
-				printf("##: %d\n",*etatVehiculesInitialises);
 				if(msgrcv(msgid,&requeteV,sizeof(RequeteVoiture),1,0) == -1)
 				{
 					printf("Erreur de lecture de la requete de la voiture %s \n", requeteV.typeVoiture);
 					exit(1);
-				}
+				}	
+				
+							//Construction et envoie de la requete au serveur
+						constructionRequeteEchangeur(&requeteE, requeteV.position);
+						if(msgsnd(msgid2,&requeteE,sizeof(RequeteEchangeur),0) == -1)
+						{
+							printf("Erreur d'envoi de la requete au serveur par %d \n", getpid());
+							exit(1);
+						}
+						
+							//On boucle tant qu'on ne reçoit pas de réponse du serveur controleur
+						while (reponseReq2.reponse != 'Y' && reponseReq2.reponse != 'N') 
+						{
+							if(msgrcv(msgid2,&reponseReq2,sizeof(ReponseRequete),getpid(),0) == -1)
+							{
+								printf("Erreur de lecture de la reponse du serveur controleur \n");
+								exit(1);
+							}
+						}
+						printf("Reponse du serveur controleur: %c\n",reponseReq2.reponse);
+						
 				
 					//Construction et envoi de la réponse au véhicule (**Temporaire**)
 				reponseReq.type = requeteV.pidEmetteur;
-				reponseReq.reponse = 'Y';
+				if(reponseReq2.reponse == 'Y')		
+					reponseReq.reponse = 'Y';
+				else
+					reponseReq.reponse = 'N';
+					//On envoi une réponse au véhicule
 				if(msgsnd(msgid,&reponseReq,sizeof(ReponseRequete),0) == -1)
 				{
 					printf("Erreur d'envoi de la reponse à la voiture %s \n", requeteV.typeVoiture);
 					exit(1);
 				}
-				fprintf(stdout,"missionsAccomplies: %d \n",*missionsAccomplies);
+						reponseReq2.reponse='X';
 				
-			}while (*missionsAccomplies+1 != atoi(argv[1]));
-			
+				fprintf(stdout,"missionsAccomplies: %d \n",(*missionsAccomplies)+1);
+				usleep(10000);
+			}while (*missionsAccomplies != atoi(argv[1]));
 			
 
-		/*
-			while (num > 0) 
-			{
-				wait(NULL);
-				num--;
-			}
 		
-		*/
+			//while (*missionsAccomplies != atoi(argv[1])) {printf("%d\n",0);}
 			
+			while ((pid=waitpid(-1,NULL,0)) != -1){}
+		
+			exit(1);
 		}
 		else if(pid==-1)
 		{
 			printf("erreur creation Echangeur n: %d",0);
-			exit(0);
+			exit(1);
 		}
 
 	//}
-
 		
 		
+	
 		
 		
+		//On boucle tant que tous les véhicules ne sont pas arrivés à destination
+	do
+	{
+			//On réceptionne la requete de l'échangeur
+		if(msgrcv(msgid2,&requeteE,sizeof(RequeteEchangeur),1,0) == -1)
+		{
+			printf("Erreur de lecture de la requete de l'echangeur \n");
+			exit(1);
+		}		
+	
+			//Construction et envoi de la réponse à l'échangeur (**Temporaire**)
+		reponseReq2.reponse=demandeAutorisation(&(requeteE.positionVoiture),trafficCarefour,statutFeu);
+		reponseReq2.type = requeteE.pidEmetteur;
+			//On envoi une réponse à l'échangeur
+		if(msgsnd(msgid2,&reponseReq2,sizeof(ReponseRequete),0) == -1)
+		{
+			printf("Erreur d'envoi de la reponse a l'echangeur %d\n", requeteE.positionVoiture.numEchangeur);
+			exit(1);
+		}
+				
+		fprintf(stdout,"le serveur controleur a reagit. \n");
+		usleep(5000);
+	}while (*missionsAccomplies != atoi(argv[1]));		
+		
+	while ((pid=waitpid(-1,NULL,0)) != -1){}
 		
 		
-	wait(NULL);
-	fprintf(stdout,"%d - %d\n",trafficCarefour[0].NS,trafficCarefour[0].EO);
+	fprintf(stdout,"N:%d - S:%d - E:%d - O:%d\n",trafficCarefour[0].N,trafficCarefour[0].S,trafficCarefour[0].E,trafficCarefour[0].O);
 	fprintf(stdout,"missionsAccomplies: %d \n",*missionsAccomplies);
 		
-		
+	/*
+	if (semctl(sem_id,0,IPC_RMID,NULL)==-1)
+	{
+		perror("impossible de detruire le semaphore") ;
+		exit(1) ;
+	}
+	*/	
+	
 	shmdt(missionsAccomplies);
 	shmdt(etatVehiculesInitialises);
 	shmdt(trafficCarefour);

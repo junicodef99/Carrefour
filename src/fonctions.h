@@ -41,8 +41,20 @@ void initTrafficCarefour(Traffic* trafficC)
 	int i;
 	for(i=0; i<4; i++)
 	{
-		trafficC[i].NS=0;
-		trafficC[i].EO=0;
+		trafficC[i].N=0;
+		trafficC[i].S=0;
+		trafficC[i].E=0;
+		trafficC[i].O=0;
+	}
+}
+
+void initStatutFeux(Feu *feu)
+{
+	int i;
+	for(i=0; i<4; i++)
+	{
+		feu[i].NS=0;		//0 pour feu inactif, 1 pour feu actif.
+		feu[i].EO=0;		//0 pour feu inactif, 1 pour feu actif.	
 	}
 }
 
@@ -103,6 +115,79 @@ void constructionRequeteEchangeur(RequeteEchangeur *reqEchangeur, Position pos)
 	reqEchangeur->pidEmetteur = getpid();
 	reqEchangeur->positionVoiture = pos;
 }
+
+char demandeAutorisation(Position *pos, Traffic *traffic, Feu *feu)		//**Temporaire
+{
+	char result='N';
+	switch (pos->numEchangeur)
+	{
+		case 1:
+			if(pos->orientation == 'N' || pos->orientation == 'S')
+			{
+				/*
+				if(feu[(pos->numEchangeur)-1].NS==1)
+				{
+					result='Y';
+					traffic[]
+				}
+				*/
+				if(traffic[1].O<5)
+					result='Y';
+			}
+			else
+			{
+				if(traffic[2].N<5)
+					result='Y';
+			}
+		break;
+		
+		case 2:
+			if(pos->orientation == 'N' || pos->orientation == 'S')
+			{
+				if(traffic[0].E<5)
+					result='Y';
+			}
+			else
+			{
+				if(traffic[3].N<5)
+					result='Y';
+			}
+		break;
+		
+		case 3:
+			if(pos->orientation == 'N' || pos->orientation == 'S')
+			{
+				if(traffic[3].O<5)
+					result='Y';
+			}
+			else
+			{
+				if(traffic[0].S<5)
+					result='Y';
+			}
+		break;
+		
+		case 4:
+			if(pos->orientation == 'N' || pos->orientation == 'S')
+			{
+				if(traffic[2].E<5)
+					result='Y';
+			}
+			else
+			{
+				if(traffic[1].S<5)
+					result='Y';
+			}
+		break;
+	}
+	
+	return result;
+}
+
+
+
+
+
 
 
 

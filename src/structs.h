@@ -22,25 +22,30 @@ typedef struct Voiture
 	Position *itineraire;
 }Voiture;
 
-	//La structure de stock du dégré de traffic par direction, par échangeur
+	//Structure de stock du dégré de traffic par orientation, par échangeur
 typedef struct Traffic
 {
-	int NS;
-	int EO;
+	int N, S, E, O;
 }Traffic;
+
+	//Structure de contrôle de l'état des feux par echangeur
+typedef struct Feu
+{
+	int NS, EO;
+}Feu;
 
 	//Structure pour la requette du véhicule
 typedef struct {
-    long type;			//contiendra le pid de la voiture
-    int pidEmetteur;
+    long type;			
+    int pidEmetteur;		//contiendra le pid de la voiture
     Position position;
     char typeVoiture[20];
 }RequeteVoiture;
 
 	//Structure pour la requette de l'échangeur
 typedef struct {
-    long type;			//contiendra le pid de l'échangeur
-    int pidEmetteur;
+    long type;			
+    int pidEmetteur;		//contiendra le pid de l'échangeur
     Position positionVoiture;
 }RequeteEchangeur;
 
@@ -49,8 +54,6 @@ typedef struct {
     long type;				//contiendra le pid du récepteur
     char reponse;
 }ReponseRequete;
-
-
 
 
 

@@ -1,4 +1,8 @@
-#define CLEMEM1 2274
-#define CLEMEM2 1287
-#define CLEMEM3 1970
-#define CLEMEMFILE1 1427
+#define CLESEM1 1224
+
+#define CLEMEM1 2164
+#define CLEMEM2 1087
+#define CLEMEM3 2870
+
+#define CLEMEMFILE1 1827
+#define CLEMEMFILE2 2827
