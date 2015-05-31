@@ -9,7 +9,18 @@
 #include <errno.h>
 
 #define MUTEX 21
+
 #define MAXPAUSE 2
+
+#define MESSARRIVE 1
+#define MESSDEMANDE 2
+#define MESSTRAVERSE 3
+#define MESSATRAVERSE 4
+#define MESSSORT 5
+
+#define PASTRAVERSE -1
+#define TRAVERSE 0
+#define ATRAVERSE 1
 
 typedef struct Voie {
 	int numero;
@@ -120,36 +131,31 @@ void erreurFin(const char* msg){ perror(msg); exit(1); }
 
 /*---------------- CODE CLIENT -----------------------*/
 
-void constructionRequete(trequete *req, Voiture *v, int croisement)
+void constructionRequete(trequete *req, Voiture *v, int croisement, int type)
 {
 	req->pidEmetteur = getpid();
 	req->v = *v;
-	if (croisement == -1)
-		req->type = 1;
-	else {
-		req->croisement = croisement;
-		req->type = 2;
-	}
+	req->croisement = croisement;
+	req->type = type;
 }
 
-void affichageRequete(trequete *preq)
+void affichageRequete(trequete *req)
 {
-//				snprintf(buffer, sizeof(buffer), "Priorite a voie %d\n", croisement);
-//				message(voiture.num, buffer);
+	if (req->type == MESSARRIVE)
+		snprintf(buffer, sizeof(buffer), "Arrive voie %d\n", req->v.voie->numero);
+	else if (req->type == MESSDEMANDE)
+		snprintf(buffer, sizeof(buffer), "Dem. int. %d\n", req->croisement);
+	else if (req->type == MESSTRAVERSE)
+		snprintf(buffer, sizeof(buffer), "Traverse voie %d\n", req->croisement);
+	else if (req->type == MESSATRAVERSE)
+		snprintf(buffer, sizeof(buffer), "A traverse voie %d\n", req->croisement);
+	else if (req->type == MESSSORT)
+		snprintf(buffer, sizeof(buffer), "Sort voie %d\n", req->v.voie->numero);
 
-	if (preq->type == 1)
-		snprintf(buffer, sizeof(buffer), "Arrive voie %d\n", preq->v.voie->numero);
-	else
-		snprintf(buffer, sizeof(buffer), "Dem. int. %d\n", preq->croisement);
-
-	message(preq->v.numero, buffer);
-	
-//	if (preq->type == 1) printf("Voiture %d proc %d arrive voie %d\n", preq->v.numero, preq->pidEmetteur, preq->v.voie->numero);
-//	else if (preq->type == 2) printf("Voiture %d proc %d demande a passer intersection %d voie %d\n", preq->v.numero, preq->pidEmetteur, preq->croisement, preq->v.voie->numero);
-
+	message(req->v.numero, buffer);
 }
 
-void affichageReponse(trequete *preq,treponse *prep)
+void affichageReponse(trequete *req,treponse *prep)
 {
 
 }
@@ -186,40 +192,58 @@ void voiture(int numero, int voie)
 	}
 */
 
+	P(MUTEX);
+	constructionRequete(&req, &v, 0, MESSARRIVE);
+	affichageRequete(&req);
+	msgsnd(msgid,&req,tailleReq,0);
+	V(MUTEX);
+
 	for (i=0 ; i < 6 ; i++) {
 			croisement = v.voie->croisements[i];
 			
-			maj_position(&v, croisement, 0);
-			constructionRequete(&req, &v, -1);
-			affichageRequete(&req);
-			msgsnd(msgid,&req,tailleReq,0);
 			if (croisement == -1) break;
 			
-			constructionRequete(&req, &v, croisement);
+			P(MUTEX);
+			maj_position(&v, croisement, PASTRAVERSE);
+			constructionRequete(&req, &v, croisement, MESSDEMANDE);
 			affichageRequete(&req);
+			V(MUTEX);
 			
 			do {
 				msgsnd(msgid,&req,tailleReq,0);
 				msgrcv(msgid,&rep,tailleRep,getpid(),0);
 			} while (rep.autorisation == 0);
+			
 			P(MUTEX);
-			snprintf(buffer, sizeof(buffer), "Traverse voie %d\n", croisement);
-			message(v.numero, buffer);
+			maj_position(&v, croisement, TRAVERSE);
+			constructionRequete(&req, &v, croisement, MESSTRAVERSE);
+			affichageRequete(&req);
+			msgsnd(msgid,&req,tailleReq,0);
 			V(MUTEX);
+			
 			sleep(rand()%MAXPAUSE);
+			
 			P(MUTEX);
-			snprintf(buffer, sizeof(buffer), "A traverse voie %d\n", croisement);
-			message(v.numero, buffer);
+			maj_position(&v, croisement, ATRAVERSE);
+			constructionRequete(&req, &v, croisement, MESSATRAVERSE);
+			affichageRequete(&req);
+			msgsnd(msgid,&req,tailleReq,0);
 			V(MUTEX);
 	}
+
+	P(MUTEX);	
+	constructionRequete(&req, &v, 0, MESSSORT);
+	affichageRequete(&req);
+	msgsnd(msgid,&req,tailleReq,0);
+	V(MUTEX);
 }
 
 /*---------------- CODE SERVEUR -----------------------*/
 
-void constructionReponse(trequete *preq,treponse *prep)
+void constructionReponse(trequete *req,treponse *prep)
 {
-//	if (preq->type == 1) printf("Voiture %d proc %d arrive voie %d\n", preq->v.numero, preq->pidEmetteur, preq->v.voie->numero);
-//	else if (preq->type == 2) printf("Voiture %d proc %d demande a passer intersection %d voie %d\n", preq->v.numero, preq->pidEmetteur, preq->croisement, preq->v.voie->numero);
+//	if (req->type == 1) printf("Voiture %d proc %d arrive voie %d\n", req->v.numero, req->pidEmetteur, req->v.voie->numero);
+//	else if (req->type == 2) printf("Voiture %d proc %d demande a passer intersection %d voie %d\n", req->v.numero, req->pidEmetteur, req->croisement, req->v.voie->numero);
 	
 	
 /*			val = semctl(sem_id, croisement-1, GETVAL, NULL);
