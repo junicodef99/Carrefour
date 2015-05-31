@@ -155,7 +155,7 @@ void affichageRequete(trequete *req)
 	message(req->v.numero, buffer);
 }
 
-void affichageReponse(trequete *req,treponse *prep)
+void affichageReponse(trequete *req,treponse *rep)
 {
 
 }
@@ -240,8 +240,12 @@ void voiture(int numero, int voie)
 
 /*---------------- CODE SERVEUR -----------------------*/
 
-void constructionReponse(trequete *req,treponse *prep)
+void constructionReponse(trequete *req,treponse *rep)
 {
+
+	rep->type = req->pidEmetteur;
+	rep->autorisation = 1;
+	
 //	if (req->type == 1) printf("Voiture %d proc %d arrive voie %d\n", req->v.numero, req->pidEmetteur, req->v.voie->numero);
 //	else if (req->type == 2) printf("Voiture %d proc %d demande a passer intersection %d voie %d\n", req->v.numero, req->pidEmetteur, req->croisement, req->v.voie->numero);
 	
@@ -274,24 +278,27 @@ void constructionReponse(trequete *req,treponse *prep)
 
 }
 
+void maj_carrefour(trequete *req)
+{
+
+}
+
 void serveur()
 {
 	trequete req;
 	treponse rep;
-	int  tailleReq,tailleRep;
 
-	tailleReq = sizeof(trequete) - sizeof(long);
 	initRand();
 
 	while (1) {
 		msgrcv(msgid,&req,tailleReq,0,0);
-		constructionReponse(&req,&rep);
-/*
-		break;
-		rep.type = req.pidEmetteur;
-		tailleRep = sizeof(int);
-		msgsnd(msgid,&rep,tailleRep,0);
-*/
+
+		maj_carrefour(&req);
+		
+		if (req.type == MESSDEMANDE) {
+			constructionReponse(&req,&rep);
+			msgsnd(msgid,&rep,tailleRep,0);
+		}
 	}
 }
 
