@@ -1,3 +1,9 @@
+/**
+ * \file main.c
+ * \brief Effectue les premieres operation du programme.
+ *
+ * Cree les processus fils, les objets IPC, affiche les premieres informations.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ipc.h>
@@ -55,11 +61,25 @@ main(int argc,char* argv[])
 	semctl(sem_id, 0, IPC_RMID, NULL);
 }
 
+/**
+ * \fn void erreurFin(const char* msg)
+ * \brief Affiche un message d'erreur systeme.
+ *
+ * \param msg Le message d'erreur a afficher.
+ */
 void erreurFin(const char* msg){ perror(msg); exit(1); }
 
-/*------------- CODE GESTION PROCESSUS -----------------------*/
-
-/* fonction permettant de creer nbFils qui executent la meme fonction */
+/**
+ * \fn void forkn(int nbFils, char *voies[], void (*fonction)())
+ * \brief Cree nbFils processus fils (voitures) qui executent la meme fonction.
+ *
+ * Si voies est NULL, cree nbFils voitures avec une voie aleatoire.
+ * Si voies est non NULL, cree nbFils voitures avec une la voie correspondant aux differents membres de voies.
+ *
+ * \param nbFils Le nombre de voitures a creer.
+ * \param voies Le tableau des voies a affecter aux voitures.
+ * \param fonction La fonction qui sera exectuee par les voitures.
+ */
 void forkn(int nbFils, char *voies[], void (*fonction)())
 {
 	int i;
@@ -79,6 +99,13 @@ void forkn(int nbFils, char *voies[], void (*fonction)())
 	}
 }
 
+/**
+ * \fn void traitantSIGINT(int s)
+ * \brief Redefini le signal SIGINT.
+ * Supprime les objets IPC lors de l'interception d'un signal SIGINT.
+ *
+ * \param s Le numero du signal intercepte.
+ */ 
 void traitantSIGINT(int s)
 {
 	msgctl(msgid,IPC_RMID,NULL);
@@ -86,6 +113,13 @@ void traitantSIGINT(int s)
 	exit(0);
 }
 
+/**
+ * \fn void premiere_ligne(int num)
+ * \brief Affiche la premiere ligne d'informations.
+ * Affiche sous forme de colonnes les differentes voitures creees.
+ *
+ * \param num Le nombre de voitures creees (<=> le nombre de colonnes)
+ */
 void premiere_ligne(int num)
 {
 	int i;
