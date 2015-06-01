@@ -3,52 +3,49 @@
 #include "project.h"
 #include "serveur.h"
 
+#define TAILLE 5
+
+int croisements[25] = {0,0,-1,0,0,0,0,0,0,0,-1,0,-1,0,-1,0,0,0,0,0,0,0,-1,0,0};
+
 /*---------------- CODE SERVEUR -----------------------*/
 
-void constructionReponse(trequete *req,treponse *rep)
+void constructionReponse(Requete *req,Reponse *rep)
 {
-
 	rep->type = req->pidEmetteur;
-	rep->autorisation = 1;
-	
-//	if (req->type == 1) printf("Voiture %d proc %d arrive voie %d\n", req->v.numero, req->pidEmetteur, req->v.voie->numero);
-//	else if (req->type == 2) printf("Voiture %d proc %d demande a passer intersection %d voie %d\n", req->v.numero, req->pidEmetteur, req->croisement, req->v.voie->numero);
-	
-	
-/*			val = semctl(sem_id, croisement-1, GETVAL, NULL);
-			if (val == 0) {
-				P(21);
-				snprintf(buffer, sizeof(buffer), "Priorite a voie %d\n", croisement);
-				message(voiture.num, buffer);
-				V(21);
-				P(s);
-				P(21);
-				snprintf(buffer, sizeof(buffer), "Repart voie %d\n", croisement);
-				message(voiture.num, buffer);
-				V(21);
-			} else {
-				P(s);
-			}
-			P(21);
-			snprintf(buffer, sizeof(buffer), "Traverse voie %d\n", croisement);
-			message(voiture.num, buffer);
-			V(21);
-			sleep(rand()%MAXPAUSE);
-			P(21);
-			snprintf(buffer, sizeof(buffer), "A traverse voie %d\n", croisement);
-			message(voiture.num, buffer);
-			V(21);
-			V(s);
-*/
 
+	if (croisements[req->croisement] == 0)
+		rep->autorisation = 1;
+	else
+		rep->autorisation = 1;
 }
 
-void affichageReponse(trequete *req,treponse *rep)
+void affichageReponse(Requete *req,Reponse *rep)
 {
 
 }
 
-void maj_carrefour(trequete *req)
+void maj_carrefour(Requete *req)
 {
+	int i = req->croisement;
+	int etat = req->traverse;
+	croisements[i] = etat;
+//	affiche_carrefour();
+}
 
+void affiche_carrefour()
+{
+	P(MUTEX);
+	
+	int i, j;
+
+	printf("\n--------------------------------------------\n");
+	for (i=0;i<TAILLE;i++) {
+		for (j=0;j<TAILLE;j++) {
+			printf("%d\t", croisements[i*TAILLE+j]);
+		}
+		printf("\n");
+	}
+	printf("--------------------------------------------\n");
+	
+	V(MUTEX);
 }

@@ -3,8 +3,10 @@
 
 void erreurFin(const char* msg);
 
-void forkn(int nbFils, int voie, void (*pauBoulot)());
+void forkn(int nbFils, char *voies[], void (*fonction)());
 
 void traitantSIGINT(int s);
+
+void premiere_ligne(int num);
 
 #endif

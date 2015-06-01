@@ -1,7 +1,7 @@
 #ifndef __PROJECT__ 
 #define __PROJECT__
 
-#define MUTEX 21
+#define MUTEX 1
 
 #define MAXPAUSE 2
 
@@ -11,9 +11,9 @@
 #define MESSATRAVERSE 4
 #define MESSSORT 5
 
-#define PASTRAVERSE -1
-#define TRAVERSE 0
-#define ATRAVERSE 1
+#define PASTRAVERSE 0
+#define TRAVERSE 1
+#define ATRAVERSE 0
 
 typedef struct Voie {
 	int numero;
@@ -33,16 +33,18 @@ typedef struct {
 	pid_t pidEmetteur;
 	Voiture v;
 	int croisement;
-} trequete;
+	int voie;
+	int traverse;
+} Requete;
 
 typedef struct {
 	long  type;
 	Voiture v;
 	int autorisation;
-} treponse;
+} Reponse;
 
-//extern int tailleReq = sizeof(trequete) - sizeof(long);
-//extern int tailleRep = sizeof(treponse);
+//extern int tailleReq = sizeof(Requete) - sizeof(long);
+//extern int tailleRep = sizeof(Reponse);
 
 extern int tailleReq;
 extern int tailleRep;

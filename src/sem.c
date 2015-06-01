@@ -3,11 +3,8 @@
 #include "project.h"
 #include "sem.h"
 
-//struct sembuf sem_oper ;  /* Operation P & V */
-
 void P(int semnum)
 {
-	//printf("Blocage semaphore %d\n",semnum);
 	sem_oper.sem_num = semnum-1;	// Numéro du sémaphore
 	sem_oper.sem_op = -1 ;	// Opération (P(s))
 	sem_oper.sem_flg = 0 ;	// NULL
@@ -17,7 +14,6 @@ void P(int semnum)
 
 void V(int semnum)
 {
-	//printf("Deblocage semaphore %d\n",semnum);
 	sem_oper.sem_num = semnum-1;	// Numéro du sémaphore
 	sem_oper.sem_op = 1 ;	// Opération (V(s))
 	sem_oper.sem_flg = 0 ;	// NULL
@@ -25,19 +21,11 @@ void V(int semnum)
 	semop(sem_id,&sem_oper,1);
 }
 
-int initsem() 
+int initsem()
 {
-   sem_id = semget(IPC_PRIVATE, 16, IPC_CREAT | IPC_EXCL | 0666);
-    
-   union semun {
-			int val;
-			struct semid_ds *stat;
-			ushort *array;
-	} ctl_arg;
+	sem_id = semget(IPC_PRIVATE, 1, IPC_CREAT | IPC_EXCL | 0666);
 
-	ushort array[21] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};	// 20 => MUTEX
-	ctl_arg.array = array;
-	semctl(sem_id, 0, SETALL, ctl_arg);
+	semctl(sem_id, 0, SETVAL, 1);
 
 	return (sem_id);
 }

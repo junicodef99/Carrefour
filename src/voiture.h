@@ -3,6 +3,8 @@
 
 #include "project.h"
 
+void affiche_voiture(Voiture *v);
+
 void initRand();
 
 void voiture(int numero, int voie);

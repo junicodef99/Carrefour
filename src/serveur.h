@@ -1,10 +1,12 @@
 #ifndef __SERVEUR__ 
 #define __SERVEUR__
 
-void constructionReponse(trequete *req,treponse *rep);
+void constructionReponse(Requete *req,Reponse *rep);
 
-void affichageReponse(trequete *req,treponse *rep);
+void affichageReponse(Requete *req,Reponse *rep);
 
-void maj_carrefour(trequete *req);
+void maj_carrefour(Requete *req);
+
+void affiche_carrefour();
 
 #endif

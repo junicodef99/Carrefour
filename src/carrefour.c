@@ -5,16 +5,17 @@
 
 void serveur()
 {
-	trequete req;
-	treponse rep;
+	Requete req;
+	Reponse rep;
 
 	initRand();
 
 	while (1) {
-		msgrcv(msgid,&req,tailleReq,0,0);
+		msgrcv(msgid,&req,3*tailleReq,0,0);
 
+		if ((req.type == MESSDEMANDE) || (req.type == MESSTRAVERSE) || (req.type == MESSATRAVERSE))
 		maj_carrefour(&req);
-		
+
 		if (req.type == MESSDEMANDE) {
 			constructionReponse(&req,&rep);
 			msgsnd(msgid,&rep,tailleRep,0);

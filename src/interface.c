@@ -2,11 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "interface.h"
-/*
-char buffer[1024];
-char output[10240];
-FILE *file;
-*/
+
 void message(int i, char* s) {
    #define COLONNE 20
    int j, NbBlanc;
@@ -21,4 +17,3 @@ void message(int i, char* s) {
    fflush(stdout);
    fclose(file);
 }
-

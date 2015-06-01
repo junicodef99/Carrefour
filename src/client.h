@@ -1,8 +1,8 @@
 #ifndef __CLIENT__ 
 #define __CLIENT__
 
-void constructionRequete(trequete *req, Voiture *v, int croisement, int type);
+void constructionRequete(Requete *req, Voiture *v, int croisement, int voie, int traverse, int type);
 
-void affichageRequete(trequete *req);
+void affichageRequete(Requete *req);
 
 #endif
