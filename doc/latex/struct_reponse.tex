@@ -1,0 +1,48 @@
+\hypertarget{struct_reponse}{}\section{Reponse Struct Reference}
+\label{struct_reponse}\index{Reponse@{Reponse}}
+
+
+Represente une reponse du serveur pour le client (d\textquotesingle{}un carrefour pour une voiture).  
+
+
+
+
+{\ttfamily \#include $<$project.\+h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+long \hyperlink{struct_reponse_a6a83a8677f7c78fd146859325e08209a}{type}
+\item 
+int \hyperlink{struct_reponse_a9ae59baa7d0f7ac15cc2090faf0b5b43}{autorisation}
+\item 
+\hypertarget{struct_reponse_a76a64000aab59dcc4195c1b6e1605eb3}{}\hyperlink{struct_voiture}{Voiture} {\bfseries v}\label{struct_reponse_a76a64000aab59dcc4195c1b6e1605eb3}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represente une reponse du serveur pour le client (d\textquotesingle{}un carrefour pour une voiture). 
+
+Une requete est caracterisee par \+:
+\begin{DoxyItemize}
+\item Son type. Vaut le pid du client ayant emis la requete.
+\item La reponse a la requete. Peut valoir \+:
+\begin{DoxyItemize}
+\item 1 \+: autorise la voiture a traverser le croisement demande
+\item 2 \+: interdit la voiture de traverser le croisement demande 
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\subsection{Field Documentation}
+\hypertarget{struct_reponse_a9ae59baa7d0f7ac15cc2090faf0b5b43}{}\index{Reponse@{Reponse}!autorisation@{autorisation}}
+\index{autorisation@{autorisation}!Reponse@{Reponse}}
+\subsubsection[{autorisation}]{\setlength{\rightskip}{0pt plus 5cm}int autorisation}\label{struct_reponse_a9ae59baa7d0f7ac15cc2090faf0b5b43}
+La reponse a la requete. \hypertarget{struct_reponse_a6a83a8677f7c78fd146859325e08209a}{}\index{Reponse@{Reponse}!type@{type}}
+\index{type@{type}!Reponse@{Reponse}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}long type}\label{struct_reponse_a6a83a8677f7c78fd146859325e08209a}
+Le type de message. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/project.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,70 @@
+\hypertarget{serveur_8c}{}\section{src/serveur.c File Reference}
+\label{serveur_8c}\index{src/serveur.\+c@{src/serveur.\+c}}
+
+
+Contient le code du serveur dans le modele client-\/serveur (le serveur).  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}project.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}serveur.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{serveur_8c_abfc917730b130b41ae69504895664b93}{construction\+Reponse} (\hyperlink{struct_requete}{Requete} $\ast$req, \hyperlink{struct_reponse}{Reponse} $\ast$rep)
+\begin{DoxyCompactList}\small\item\em Construit une reponse pour le client. La reponse peut prendre 2 formes \+: \end{DoxyCompactList}\item 
+void \hyperlink{serveur_8c_ad4ed2a03e4b3f3dea1e3493e749a5155}{affichage\+Reponse} (\hyperlink{struct_requete}{Requete} $\ast$req, \hyperlink{struct_reponse}{Reponse} $\ast$rep)
+\begin{DoxyCompactList}\small\item\em Affiche la nature et les informations de la reponse a la requete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contient le code du serveur dans le modele client-\/serveur (le serveur). 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{serveur_8c_ad4ed2a03e4b3f3dea1e3493e749a5155}{}\index{serveur.\+c@{serveur.\+c}!affichage\+Reponse@{affichage\+Reponse}}
+\index{affichage\+Reponse@{affichage\+Reponse}!serveur.\+c@{serveur.\+c}}
+\subsubsection[{affichage\+Reponse}]{\setlength{\rightskip}{0pt plus 5cm}void affichage\+Reponse (
+\begin{DoxyParamCaption}
+\item[{{\bf Requete} $\ast$}]{req, }
+\item[{{\bf Reponse} $\ast$}]{rep}
+\end{DoxyParamCaption}
+)}\label{serveur_8c_ad4ed2a03e4b3f3dea1e3493e749a5155}
+
+
+Affiche la nature et les informations de la reponse a la requete. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & Pointeur vers la requete qui a ete recue. \\
+\hline
+{\em rep} & Pointeur vers la reponse a afficher. \\
+\hline
+\end{DoxyParams}
+\hypertarget{serveur_8c_abfc917730b130b41ae69504895664b93}{}\index{serveur.\+c@{serveur.\+c}!construction\+Reponse@{construction\+Reponse}}
+\index{construction\+Reponse@{construction\+Reponse}!serveur.\+c@{serveur.\+c}}
+\subsubsection[{construction\+Reponse}]{\setlength{\rightskip}{0pt plus 5cm}void construction\+Reponse (
+\begin{DoxyParamCaption}
+\item[{{\bf Requete} $\ast$}]{req, }
+\item[{{\bf Reponse} $\ast$}]{rep}
+\end{DoxyParamCaption}
+)}\label{serveur_8c_abfc917730b130b41ae69504895664b93}
+
+
+Construit une reponse pour le client. La reponse peut prendre 2 formes \+: 
+
+
+\begin{DoxyItemize}
+\item Autorisation \+: autorise la voiture a traverser le croisement demande
+\item Interdiction \+: interdit la voiture de traverser le croisement demande
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & Pointeur vers la requete qui a ete recue. \\
+\hline
+{\em rep} & Pointeur vers la reponse qui va etre renseignee. \\
+\hline
+\end{DoxyParams}

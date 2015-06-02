@@ -1,0 +1,82 @@
+\hypertarget{struct_requete}{}\section{Requete Struct Reference}
+\label{struct_requete}\index{Requete@{Requete}}
+
+
+Represente une requete du client pour le serveur (d\textquotesingle{}une voiture pour un carrefour).  
+
+
+
+
+{\ttfamily \#include $<$project.\+h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+long \hyperlink{struct_requete_a6a83a8677f7c78fd146859325e08209a}{type}
+\item 
+pid\+\_\+t \hyperlink{struct_requete_a3041e2766c91f9b17975056266bfc841}{pid\+Emetteur}
+\item 
+\hyperlink{struct_voiture}{Voiture} \hyperlink{struct_requete_a76a64000aab59dcc4195c1b6e1605eb3}{v}
+\item 
+int \hyperlink{struct_requete_a558796b11448541e07f81ec0df5bf2bc}{croisement}
+\item 
+int \hyperlink{struct_requete_ad5ecb866a563750cd63db63b9b56c060}{voie}
+\item 
+int \hyperlink{struct_requete_a276684defbdd9a2e8b95ce40b8ef3576}{traverse}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represente une requete du client pour le serveur (d\textquotesingle{}une voiture pour un carrefour). 
+
+Une requete est caracterisee par \+:
+\begin{DoxyItemize}
+\item Son type. Peut valoir \+:
+\begin{DoxyItemize}
+\item M\+E\+S\+S\+A\+R\+R\+I\+V\+E \+: Indique que la voiture arrive sur le carrefour par la voie indiquee.
+\item M\+E\+S\+S\+D\+E\+M\+A\+N\+D\+E \+: Demande au serveur (carrefour) la permission de traverser le croisement indique.
+\item M\+E\+S\+S\+T\+R\+A\+V\+E\+R\+S\+E \+: Indique que la voiture debute le traversement du croisement indique.
+\item M\+E\+S\+S\+A\+T\+R\+A\+V\+E\+R\+S\+E \+: Indique que la voiture a traverse le croisement indique.
+\item M\+E\+S\+S\+S\+O\+R\+T \+: Indique que la voiture quitte le carrefour par la voie indiquee.
+\end{DoxyItemize}
+\item Le pid du processus qui emet la requete (la voiture).
+\item Une copie de la voiture qui emet la requete.
+\item L\textquotesingle{}indice du croisement ou se trouve la voiture.
+\item Le numero de la voie, selon le cas \+:
+\begin{DoxyItemize}
+\item ou se trouve la voiture
+\item qui est traversee au croisement indique
+\end{DoxyItemize}
+\item L\textquotesingle{}indice du croisement ou se trouve la voiture.
+\item L\textquotesingle{}etat de traversement (directement lie aux informations de traversement). Peut valoir \+:
+\begin{DoxyItemize}
+\item P\+A\+S\+T\+R\+A\+V\+E\+R\+S\+E
+\item T\+R\+A\+V\+E\+R\+S\+E
+\item A\+T\+R\+A\+V\+E\+R\+S\+E 
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\subsection{Field Documentation}
+\hypertarget{struct_requete_a558796b11448541e07f81ec0df5bf2bc}{}\index{Requete@{Requete}!croisement@{croisement}}
+\index{croisement@{croisement}!Requete@{Requete}}
+\subsubsection[{croisement}]{\setlength{\rightskip}{0pt plus 5cm}int croisement}\label{struct_requete_a558796b11448541e07f81ec0df5bf2bc}
+L\textquotesingle{}indice du croisement. \hypertarget{struct_requete_a3041e2766c91f9b17975056266bfc841}{}\index{Requete@{Requete}!pid\+Emetteur@{pid\+Emetteur}}
+\index{pid\+Emetteur@{pid\+Emetteur}!Requete@{Requete}}
+\subsubsection[{pid\+Emetteur}]{\setlength{\rightskip}{0pt plus 5cm}pid\+\_\+t pid\+Emetteur}\label{struct_requete_a3041e2766c91f9b17975056266bfc841}
+Le pid du processus emetteur. \hypertarget{struct_requete_a276684defbdd9a2e8b95ce40b8ef3576}{}\index{Requete@{Requete}!traverse@{traverse}}
+\index{traverse@{traverse}!Requete@{Requete}}
+\subsubsection[{traverse}]{\setlength{\rightskip}{0pt plus 5cm}int traverse}\label{struct_requete_a276684defbdd9a2e8b95ce40b8ef3576}
+L\textquotesingle{}etat de traversement du croisement. \hypertarget{struct_requete_a6a83a8677f7c78fd146859325e08209a}{}\index{Requete@{Requete}!type@{type}}
+\index{type@{type}!Requete@{Requete}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}long type}\label{struct_requete_a6a83a8677f7c78fd146859325e08209a}
+Le type de message. \hypertarget{struct_requete_a76a64000aab59dcc4195c1b6e1605eb3}{}\index{Requete@{Requete}!v@{v}}
+\index{v@{v}!Requete@{Requete}}
+\subsubsection[{v}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Voiture} v}\label{struct_requete_a76a64000aab59dcc4195c1b6e1605eb3}
+La copie de la voiture qui emet la requete. \hypertarget{struct_requete_ad5ecb866a563750cd63db63b9b56c060}{}\index{Requete@{Requete}!voie@{voie}}
+\index{voie@{voie}!Requete@{Requete}}
+\subsubsection[{voie}]{\setlength{\rightskip}{0pt plus 5cm}int voie}\label{struct_requete_ad5ecb866a563750cd63db63b9b56c060}
+Le numero de la voie. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/project.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,134 @@
+\hypertarget{voiture_8c}{}\section{src/voiture.c File Reference}
+\label{voiture_8c}\index{src/voiture.\+c@{src/voiture.\+c}}
+
+
+Contient les fonctions utiles au fonctionnement et a la representation des voitures.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}project.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}voiture.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{voiture_8c_affc667f54d3aad05a212a708a1967851}{}void \hyperlink{voiture_8c_affc667f54d3aad05a212a708a1967851}{init\+Rand} ()\label{voiture_8c_affc667f54d3aad05a212a708a1967851}
+
+\begin{DoxyCompactList}\small\item\em Permet de generer de nouveaux nombres aleatoires. Necessaire pour que les differents processus (les voitures) ne generent pas les memes nombres aleatoires (les memes voies). \end{DoxyCompactList}\item 
+void \hyperlink{voiture_8c_aefdfaf590d5f158bba54b7bb0c081d9a}{affiche\+\_\+voiture} (\hyperlink{struct_voiture}{Voiture} $\ast$v)
+\begin{DoxyCompactList}\small\item\em Affiche les informations d\textquotesingle{}une voiture. \end{DoxyCompactList}\item 
+void \hyperlink{voiture_8c_a60a6644d2debba1f7e821e4d1977e0dd}{voiture} (int numero, int voie)
+\begin{DoxyCompactList}\small\item\em Fonction realisee par chaque processus (chaque voiture). Comprend 2 phases \+: \end{DoxyCompactList}\item 
+void \hyperlink{voiture_8c_a64d9e45e6fd28b23c6479afbc03c64f1}{maj\+\_\+position} (\hyperlink{struct_voiture}{Voiture} $\ast$v, int position, int traverse)
+\begin{DoxyCompactList}\small\item\em Met a jour la position de la voiture dans sa structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_voie}{Voie} \hyperlink{voiture_8c_aa9246ae4d5b520f1e61ed589dd0bf1bf}{voies} \mbox{[}12\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contient les fonctions utiles au fonctionnement et a la representation des voitures. 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{voiture_8c_aefdfaf590d5f158bba54b7bb0c081d9a}{}\index{voiture.\+c@{voiture.\+c}!affiche\+\_\+voiture@{affiche\+\_\+voiture}}
+\index{affiche\+\_\+voiture@{affiche\+\_\+voiture}!voiture.\+c@{voiture.\+c}}
+\subsubsection[{affiche\+\_\+voiture}]{\setlength{\rightskip}{0pt plus 5cm}void affiche\+\_\+voiture (
+\begin{DoxyParamCaption}
+\item[{{\bf Voiture} $\ast$}]{v}
+\end{DoxyParamCaption}
+)}\label{voiture_8c_aefdfaf590d5f158bba54b7bb0c081d9a}
+
+
+Affiche les informations d\textquotesingle{}une voiture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Pointeur sur la voiture a afficher. \\
+\hline
+\end{DoxyParams}
+\hypertarget{voiture_8c_a64d9e45e6fd28b23c6479afbc03c64f1}{}\index{voiture.\+c@{voiture.\+c}!maj\+\_\+position@{maj\+\_\+position}}
+\index{maj\+\_\+position@{maj\+\_\+position}!voiture.\+c@{voiture.\+c}}
+\subsubsection[{maj\+\_\+position}]{\setlength{\rightskip}{0pt plus 5cm}void maj\+\_\+position (
+\begin{DoxyParamCaption}
+\item[{{\bf Voiture} $\ast$}]{v, }
+\item[{int}]{position, }
+\item[{int}]{traverse}
+\end{DoxyParamCaption}
+)}\label{voiture_8c_a64d9e45e6fd28b23c6479afbc03c64f1}
+
+
+Met a jour la position de la voiture dans sa structure. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Pointeur sur la voiture a mettre a jour. \\
+\hline
+{\em position} & L\textquotesingle{}indice du croisement ou se trouve la voiture. \\
+\hline
+{\em traverse} & L\textquotesingle{}etat de traversement (directement lie aux informations de traversement). Peut valoir \+:
+\begin{DoxyItemize}
+\item P\+A\+S\+T\+R\+A\+V\+E\+R\+S\+E
+\item T\+R\+A\+V\+E\+R\+S\+E
+\item A\+T\+R\+A\+V\+E\+R\+S\+E 
+\end{DoxyItemize}\\
+\hline
+\end{DoxyParams}
+\hypertarget{voiture_8c_a60a6644d2debba1f7e821e4d1977e0dd}{}\index{voiture.\+c@{voiture.\+c}!voiture@{voiture}}
+\index{voiture@{voiture}!voiture.\+c@{voiture.\+c}}
+\subsubsection[{voiture}]{\setlength{\rightskip}{0pt plus 5cm}void voiture (
+\begin{DoxyParamCaption}
+\item[{int}]{numero, }
+\item[{int}]{voie}
+\end{DoxyParamCaption}
+)}\label{voiture_8c_a60a6644d2debba1f7e821e4d1977e0dd}
+
+
+Fonction realisee par chaque processus (chaque voiture). Comprend 2 phases \+: 
+
+
+\begin{DoxyItemize}
+\item Initialisation de la voiture, de deux facons \+:
+\begin{DoxyItemize}
+\item Avec une voie aleatoire
+\item Avec une voie choisie par l\textquotesingle{}utilisateur
+\end{DoxyItemize}
+\item Parcours de la voie par la voiture.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em numero} & Le numero de la voiture. \\
+\hline
+{\em voie} & Le numero de la voie. Peut valoir \+:
+\begin{DoxyItemize}
+\item -\/1 \+: la voiture prendra une voie dont le numero est genere aleatoirement (1$<$=voie$<$=12)
+\item $>$0 \+: la voiture prendra la voie correspondant a ce numero 
+\end{DoxyItemize}\\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Variable Documentation}
+\hypertarget{voiture_8c_aa9246ae4d5b520f1e61ed589dd0bf1bf}{}\index{voiture.\+c@{voiture.\+c}!voies@{voies}}
+\index{voies@{voies}!voiture.\+c@{voiture.\+c}}
+\subsubsection[{voies}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Voie} voies\mbox{[}12\mbox{]}}\label{voiture_8c_aa9246ae4d5b520f1e61ed589dd0bf1bf}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \{ \{1,\{15,16,17,13,8,3\},\{11,7,10,4,7,8\}\},
+                    \{2,\{20,21,23,24,-1\},\{11,7,4,5,-1\}\},
+                    \{3,\{-1\},\{-1\}\},
+                    \{4,\{23,18,13,7,6,5\},\{2,10,1,7,10,11\}\},
+                    \{5,\{24,19,9,4,-1\},\{2,10,7,8,-1\}\},
+                    \{6,\{-1\},\{-1\}\},
+                    \{7,\{9,8,7,11,16,21\},\{5,1,4,10,1,2\}\},
+                    \{8,\{4,3,1,0,-1\},\{5,1,10,11,-1\}\},
+                    \{9,\{-1\},\{-1\}\},
+                    \{10,\{1,6,11,17,18,19\},\{8,4,7,1,4,5\}\},
+                    \{11,\{0,5,15,20,-1\},\{8,4,1,2,-1\}\},
+                    \{12,\{-1\},\{-1\}\}  \}
+\end{DoxyCode}
+Represente les 12 voies du carrefour. 

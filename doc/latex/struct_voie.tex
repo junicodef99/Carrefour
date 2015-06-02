@@ -1,0 +1,42 @@
+\hypertarget{struct_voie}{}\section{Voie Struct Reference}
+\label{struct_voie}\index{Voie@{Voie}}
+
+
+Represente une voie d\textquotesingle{}un carrefour.  
+
+
+
+
+{\ttfamily \#include $<$project.\+h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{struct_voie_a2c30f43104974e72e2809fb4569804b0}{numero}
+\item 
+int \hyperlink{struct_voie_ac9436ae55f35dfc5e3dc8e676c73aeb5}{sem\+\_\+num} \mbox{[}6\mbox{]}
+\item 
+int \hyperlink{struct_voie_ae6c4a614ad59b4d83fc3001ff282a26b}{croisements} \mbox{[}6\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represente une voie d\textquotesingle{}un carrefour. 
+
+Une voie d\textquotesingle{}un carrefour est caracterisee par un numero (de 1 a 12). Chaque voie possede un maximum de 6 sections critiques representant les intersections (et donc collisions possibles) avec les autres voies. 
+
+\subsection{Field Documentation}
+\hypertarget{struct_voie_ae6c4a614ad59b4d83fc3001ff282a26b}{}\index{Voie@{Voie}!croisements@{croisements}}
+\index{croisements@{croisements}!Voie@{Voie}}
+\subsubsection[{croisements}]{\setlength{\rightskip}{0pt plus 5cm}int croisements\mbox{[}6\mbox{]}}\label{struct_voie_ae6c4a614ad59b4d83fc3001ff282a26b}
+Les numeros des voies croisees au niveau des indices de croisements respectifs (si la voie possede moins de 6 intersections, le premier numero \char`\"{}vide\char`\"{} vaut -\/1) \hypertarget{struct_voie_a2c30f43104974e72e2809fb4569804b0}{}\index{Voie@{Voie}!numero@{numero}}
+\index{numero@{numero}!Voie@{Voie}}
+\subsubsection[{numero}]{\setlength{\rightskip}{0pt plus 5cm}int numero}\label{struct_voie_a2c30f43104974e72e2809fb4569804b0}
+Le numero de la voie. \hypertarget{struct_voie_ac9436ae55f35dfc5e3dc8e676c73aeb5}{}\index{Voie@{Voie}!sem\+\_\+num@{sem\+\_\+num}}
+\index{sem\+\_\+num@{sem\+\_\+num}!Voie@{Voie}}
+\subsubsection[{sem\+\_\+num}]{\setlength{\rightskip}{0pt plus 5cm}int sem\+\_\+num\mbox{[}6\mbox{]}}\label{struct_voie_ac9436ae55f35dfc5e3dc8e676c73aeb5}
+Les indices des croisements avec les autres voies (si la voie possede moins de 6 intersections, le premier indice \char`\"{}vide\char`\"{} vaut -\/1) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/project.\+h\end{DoxyCompactItemize}

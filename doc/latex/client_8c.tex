@@ -1,0 +1,95 @@
+\hypertarget{client_8c}{}\section{src/client.c File Reference}
+\label{client_8c}\index{src/client.\+c@{src/client.\+c}}
+
+
+Contient le code du client dans le modele client-\/serveur (les voitures).  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}project.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}interface.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}client.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{client_8c_ab658716d7a1ce54bb23369f3e2fa7bf6}{construction\+Requete} (\hyperlink{struct_requete}{Requete} $\ast$req, \hyperlink{struct_voiture}{Voiture} $\ast$v, int croisement, int voie, int traverse, int type)
+\begin{DoxyCompactList}\small\item\em Construit une requete pour le serveur. La requete peut prendre 5 formes \+: \end{DoxyCompactList}\item 
+void \hyperlink{client_8c_a02ef3d4ed41a50563faa594adc3f8c3f}{affichage\+Requete} (\hyperlink{struct_requete}{Requete} $\ast$req)
+\begin{DoxyCompactList}\small\item\em Affiche la nature et les informations de la requete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contient le code du client dans le modele client-\/serveur (les voitures). 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{client_8c_a02ef3d4ed41a50563faa594adc3f8c3f}{}\index{client.\+c@{client.\+c}!affichage\+Requete@{affichage\+Requete}}
+\index{affichage\+Requete@{affichage\+Requete}!client.\+c@{client.\+c}}
+\subsubsection[{affichage\+Requete}]{\setlength{\rightskip}{0pt plus 5cm}void affichage\+Requete (
+\begin{DoxyParamCaption}
+\item[{{\bf Requete} $\ast$}]{req}
+\end{DoxyParamCaption}
+)}\label{client_8c_a02ef3d4ed41a50563faa594adc3f8c3f}
+
+
+Affiche la nature et les informations de la requete. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & La requete a afficher \\
+\hline
+\end{DoxyParams}
+\hypertarget{client_8c_ab658716d7a1ce54bb23369f3e2fa7bf6}{}\index{client.\+c@{client.\+c}!construction\+Requete@{construction\+Requete}}
+\index{construction\+Requete@{construction\+Requete}!client.\+c@{client.\+c}}
+\subsubsection[{construction\+Requete}]{\setlength{\rightskip}{0pt plus 5cm}void construction\+Requete (
+\begin{DoxyParamCaption}
+\item[{{\bf Requete} $\ast$}]{req, }
+\item[{{\bf Voiture} $\ast$}]{v, }
+\item[{int}]{croisement, }
+\item[{int}]{voie, }
+\item[{int}]{traverse, }
+\item[{int}]{type}
+\end{DoxyParamCaption}
+)}\label{client_8c_ab658716d7a1ce54bb23369f3e2fa7bf6}
+
+
+Construit une requete pour le serveur. La requete peut prendre 5 formes \+: 
+
+
+\begin{DoxyItemize}
+\item Information d\textquotesingle{}arrivee \+: une voiture arrive par la voie mentionnee
+\item Demande de traverser \+: une voiture demande a traverser une zone critique ($<$=$>$ un croisement avec une autre voie)
+\item Information de debut de traversement \+: une voiture est en train de traverser une zone critique
+\item Information de fin de traversement \+: une voiture a fini de traverser une zone critique
+\item Information de depart \+: une voiture sort par la voie mentionnee
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & Pointeur vers la requete qui va etre renseignee. \\
+\hline
+{\em v} & Pointeur vers la voiture effectuant la requete. \\
+\hline
+{\em croisement} & L\textquotesingle{}indice de la zone critique ($<$=$>$ le croisement) le cas echeant. \\
+\hline
+{\em voie} & L\textquotesingle{}indice de la voie d\textquotesingle{}arrivee, de depart, ou de croisement ($<$=$>$ la voie qui croise avec celle de la voiture a l\textquotesingle{}endroit critique). \\
+\hline
+{\em traverse} & L\textquotesingle{}etat de traversement (directement lie aux informations de traversement). Peut valoir \+:
+\begin{DoxyItemize}
+\item P\+A\+S\+T\+R\+A\+V\+E\+R\+S\+E
+\item T\+R\+A\+V\+E\+R\+S\+E
+\item A\+T\+R\+A\+V\+E\+R\+S\+E 
+\end{DoxyItemize}\\
+\hline
+{\em type} & Le type de requete. Peut valoir \+:
+\begin{DoxyItemize}
+\item M\+E\+S\+S\+A\+R\+R\+I\+V\+E
+\item M\+E\+S\+S\+D\+E\+M\+A\+N\+D\+E
+\item M\+E\+S\+S\+T\+R\+A\+V\+E\+R\+S\+E
+\item M\+E\+S\+S\+A\+T\+R\+A\+V\+E\+R\+S\+E
+\item M\+E\+S\+S\+S\+O\+R\+T 
+\end{DoxyItemize}\\
+\hline
+\end{DoxyParams}
