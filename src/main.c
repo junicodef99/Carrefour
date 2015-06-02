@@ -43,7 +43,7 @@ main(int argc,char* argv[])
 		forkn(argc-1, argv, voiture);
 	}
 		
-	serveur();
+	carrefour();
 
 	while (1) {
 		pid_t done = wait();

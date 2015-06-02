@@ -43,11 +43,10 @@ typedef struct {
 	int autorisation;
 } Reponse;
 
-//extern int tailleReq = sizeof(Requete) - sizeof(long);
-//extern int tailleRep = sizeof(Reponse);
-
 extern int tailleReq;
 extern int tailleRep;
+
+extern int croisements[25];
 
 extern int msgid;
 extern int sem_id;
