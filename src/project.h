@@ -93,6 +93,7 @@ typedef struct {
 typedef struct {
 	long  type;	/*!< Le type de message. */
 	int autorisation;	/*!< La reponse a la requete. */
+	Voiture v;
 } Reponse;
 
 extern int tailleReq;	/*!< La taille d'une requete. */
