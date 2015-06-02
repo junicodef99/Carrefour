@@ -39,7 +39,6 @@ typedef struct {
 
 typedef struct {
 	long  type;
-	Voiture v;
 	int autorisation;
 } Reponse;
 
