@@ -1,12 +1,22 @@
+/**
+ * \file carrefour.c
+ * \brief Contient les fonctions utiles au fonctionnement et a la representation des carrefours.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "project.h"
 #include "carrefour.h"
 
+/*! Represente la taille du carrefour. La valeur indique le nombre maximal de sections critiques par ligne/colonne (le carrefour est suppose carre et toutes les voies sont identiques). */
 #define TAILLE 5
 
+/*! Represente le carrefour. Les valeurs 0 representent des sections critiques ; Les valeurs -1 representent des sections non critiques, donc facultatives, mais tout de meme representees par soucis de simplicite. */
 int croisements[25] = {0,0,-1,0,0,0,0,0,0,0,-1,0,-1,0,-1,0,0,0,0,0,0,0,-1,0,0};
 
+/**
+ * \fn void carrefour()
+ * \brief Fonction realisee par chaque carrefour.
+ */
 void carrefour()
 {
 	Requete req;
@@ -27,6 +37,12 @@ void carrefour()
 	}
 }
 
+/**
+ * \fn void maj_carrefour(Requete *req)
+ * \brief Met a jour le carrefour avec les informations de la requete recue.
+ *
+ * \param req Pointeur sur la requete recue.
+ */
 void maj_carrefour(Requete *req)
 {
 	int i = req->croisement;
@@ -35,6 +51,10 @@ void maj_carrefour(Requete *req)
 //	affiche_carrefour();
 }
 
+/**
+ * \fn void affiche_carrefour()
+ * \brief Affiche les informations d'un carrefour.
+ */
 void affiche_carrefour()
 {
 	P(MUTEX);
