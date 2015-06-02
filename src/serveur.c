@@ -12,7 +12,7 @@ void constructionReponse(Requete *req,Reponse *rep)
 	if (croisements[req->croisement] == 0)
 		rep->autorisation = 1;
 	else
-		rep->autorisation = 1;
+		rep->autorisation = 0;
 }
 
 void affichageReponse(Requete *req,Reponse *rep)
