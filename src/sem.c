@@ -1,8 +1,18 @@
+/**
+ * \file sem.c
+ * \brief Gere les semaphores et les operations sur ces dernieres
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "project.h"
 #include "sem.h"
 
+/**
+ * \fn void P(int semnum)
+ * \brief Decremente le semaphore (blocage)
+ *
+ * \param semnum Le numero du semaphore.
+ */
 void P(int semnum)
 {
 	sem_oper.sem_num = semnum-1;	// Numéro du sémaphore
@@ -12,6 +22,12 @@ void P(int semnum)
 	semop(sem_id,&sem_oper,1);
 }
 
+/**
+ * \fn void V(int semnum)
+ * \brief Incremente le semaphore (deblocage)
+ *
+ * \param semnum Le numero du semaphore.
+ */
 void V(int semnum)
 {
 	sem_oper.sem_num = semnum-1;	// Numéro du sémaphore
@@ -21,6 +37,10 @@ void V(int semnum)
 	semop(sem_id,&sem_oper,1);
 }
 
+/**
+ * \fn int initsem()
+ * \brief Initialise les semaphores.
+ */
 int initsem()
 {
 	sem_id = semget(IPC_PRIVATE, 1, IPC_CREAT | IPC_EXCL | 0666);
